@@ -3,6 +3,13 @@
 ## Name
 Sanket Dangat
 
+## Architecture Diagram
+
+The following diagram illustrates how an Amazon EC2 instance securely accesses an Amazon S3 bucket using an IAM role. AWS STS issues temporary security credentials through the instance profile, allowing read-only access without storing long-term AWS access keys.
+
+![Architecture Diagram](./screenshots/architecture.png)
+
+
 ## Topics Practiced
 - Trust policy vs permission policy
 - STS AssumeRole
@@ -12,97 +19,122 @@ Sanket Dangat
 - Least-privilege S3 access
 
 ## What I Built
-I created an IAM role named **Week2Day3EC2S3ReadRole** and attached it to an Amazon EC2 instance named **ec2-s3-integration-test**.
 
-The EC2 instance was configured to use the IAM role instead of storing long-term AWS access keys. Temporary AWS credentials were automatically provided through the EC2 Instance Metadata Service (IMDS), allowing the instance to securely access Amazon S3.
+I built a secure AWS solution that enables an Amazon EC2 instance to access an Amazon S3 bucket using an IAM role instead of long-term AWS access keys.
 
-I attached an inline IAM permission policy named **s3-read-permission-policy** to the role. The policy granted only the required read permissions (`s3:ListBucket` and `s3:GetObject`) on the S3 bucket **ec2-s3-read-lab-sanket-dangat**, following the principle of least privilege.
+First, I created an IAM role named **Week2Day3EC2S3ReadRole** with a trust policy that allows the Amazon EC2 service (`ec2.amazonaws.com`) to assume the role. Next, I attached an inline IAM permission policy named **s3-read-permission-policy**, which grants only the required read permissions (`s3:ListBucket` and `s3:GetObject`) on the S3 bucket **ec2-s3-read-lab-sanket-dangat**, following the principle of least privilege.
+
+Finally, I attached the IAM role to the Amazon EC2 instance **ec2-s3-integration-test** through an instance profile. The EC2 instance automatically obtained temporary AWS credentials from AWS Security Token Service (AWS STS) via the EC2 Instance Metadata Service (IMDS), allowing it to securely access Amazon S3 without storing long-term AWS access keys.
 
 ## Allowed Test
-I verified that the EC2 instance **ec2-s3-integration-test** could successfully access the S3 bucket **ec2-s3-read-lab-sanket-dangat** using the attached IAM role **Week2Day3EC2S3ReadRole**.
 
-The EC2 instance successfully listed the bucket contents and downloaded the object **day3-test.txt** without configuring AWS access keys manually. The AWS CLI automatically used temporary credentials obtained through the attached IAM role.
+I verified that the Amazon EC2 instance **ec2-s3-integration-test** could securely access the Amazon S3 bucket **ec2-s3-read-lab-sanket-dangat** using the attached IAM role **Week2Day3EC2S3ReadRole**.
 
-This confirmed that:
+The EC2 instance successfully listed the bucket contents and downloaded the object **day3-test.txt** without manually configuring AWS access keys. The AWS CLI automatically used temporary credentials obtained through the attached IAM role.
 
-- The IAM role **Week2Day3EC2S3ReadRole** was correctly attached to the EC2 instance **ec2-s3-integration-test**.
+This verified the following:
 
-![image](./screenshots/role-attached-ec2.png)
+### 1. Trust Policy
 
-- The trust relationship allowed the Amazon EC2 service (`ec2.amazonaws.com`) to assume the IAM role.
+The trust policy allowed the Amazon EC2 service (`ec2.amazonaws.com`) to assume the IAM role **Week2Day3EC2S3ReadRole**.
 
 ![image](./screenshots/role-trust-policy.png)
 
-- The inline IAM permission policy **s3-read-permission-policy** granted the required read permissions (`s3:ListBucket` and `s3:GetObject`) on the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
+### 2. Inline IAM Permission Policy
+
+The inline IAM permission policy **s3-read-permission-policy** granted only the required read permissions (`s3:ListBucket` and `s3:GetObject`) on the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
 
 ![image](./screenshots/s3-Inline-permission-policy.png)
 
-- Temporary AWS credentials were automatically provided through the attached IAM role via the EC2 Instance Metadata Service (IMDS), as verified using `aws sts get-caller-identity` and `aws configure list`.
+### 3. IAM Role Attached to EC2
+
+The IAM role **Week2Day3EC2S3ReadRole** was successfully attached to the Amazon EC2 instance **ec2-s3-integration-test** through its instance profile.
+
+![image](./screenshots/role-attached-ec2.png)
+
+### 4. Temporary Credentials Verification
+
+Temporary AWS credentials were automatically issued by AWS Security Token Service (AWS STS) and made available to the EC2 instance through the EC2 Instance Metadata Service (IMDS). This was verified using the `aws sts get-caller-identity` and `aws configure list` commands.
 
 ![image](./screenshots/sts-get-caller-identity-success.png)
 
 ![image](./screenshots/aws-configure-list-verification.png)
 
-- The EC2 instance successfully listed the bucket contents and downloaded the object **day3-test.txt** from the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
+### 5. Read Access Verification
+
+The EC2 instance successfully listed the contents of the S3 bucket and downloaded the object **day3-test.txt**, confirming that the IAM role provided the expected read-only access to Amazon S3.
 
 ![image](./screenshots/s3-read-test-success.png)
 
 ## Denied Test
-I tested a write operation by attempting to upload **write-test.txt** from the EC2 instance **ec2-s3-integration-test** to the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
 
-The operation failed with an `AccessDenied` error because the IAM permission policy **s3-read-permission-policy** granted only read permissions (`s3:ListBucket` and `s3:GetObject`). It did not include write permissions such as `s3:PutObject`.
+I verified that the IAM role enforced the principle of least privilege by attempting to upload **write-test.txt** from the Amazon EC2 instance **ec2-s3-integration-test** to the Amazon S3 bucket **ec2-s3-read-lab-sanket-dangat**.
 
-This confirmed that:
+The upload operation failed with an `AccessDenied` error because the inline IAM permission policy **s3-read-permission-policy** granted only read permissions (`s3:ListBucket` and `s3:GetObject`). The policy did not allow the `s3:PutObject` action required to upload objects to the S3 bucket.
 
-- IAM permissions were enforced correctly.
-- The IAM role **Week2Day3EC2S3ReadRole** followed the principle of least privilege.
-- The EC2 instance could perform only the actions explicitly allowed by the IAM permission policy.
+This verified that:
+
+- The IAM permission policy correctly enforced the principle of least privilege.
+- The IAM role **Week2Day3EC2S3ReadRole** allowed only the explicitly permitted read operations.
+- Unauthorized write operations (`s3:PutObject`) were denied with an `AccessDenied` error.
+- The EC2 instance could access only the Amazon S3 actions granted by the attached IAM policy.
 
 ![image](./screenshots/s3-write-access-denied.png)
 
 ## What I Learned
 
-This lab helped me understand how AWS IAM roles provide secure access to AWS services without requiring long-term AWS access keys.
+This lab helped me understand how AWS IAM roles provide secure, temporary access to AWS services without requiring long-term AWS access keys.
 
-AWS IAM uses both **trust policies** and **permission policies**, each serving a different purpose:
+I learned that AWS IAM uses two different types of policies, each with a distinct purpose:
 
 - A **trust policy** defines **who can assume an IAM role**. In this lab, the trust policy allowed the Amazon EC2 service (`ec2.amazonaws.com`) to assume the IAM role **Week2Day3EC2S3ReadRole**.
 
-- A **permission policy** defines **what actions the IAM role can perform** after it has been assumed. In this lab, the inline policy **s3-read-permission-policy** allowed the EC2 instance to list the bucket and read objects from the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
+- A **permission policy** defines **what actions an assumed IAM role is allowed to perform**. In this lab, the inline IAM permission policy **s3-read-permission-policy** granted only `s3:ListBucket` and `s3:GetObject` permissions on the S3 bucket **ec2-s3-read-lab-sanket-dangat**.
 
 I also learned that:
 
-- IAM roles are more secure than storing long-term AWS access keys on EC2 instances because AWS provides temporary credentials automatically.
-- AWS Security Token Service (STS) creates temporary credentials when the EC2 service assumes the IAM role. These credentials are automatically rotated and expire after a limited time.
-- An **instance profile** is the mechanism that makes an IAM role available to an EC2 instance. When the role is attached to an EC2 instance, the AWS CLI and SDKs automatically retrieve temporary credentials through the EC2 Instance Metadata Service (IMDS).
-- Following the **principle of least privilege** reduces security risks by granting only the permissions required. In this lab, the role was limited to `s3:ListBucket` and `s3:GetObject`, preventing write operations such as `s3:PutObject`.
-- Commands such as `aws sts get-caller-identity` and `aws configure list` are useful for verifying the IAM identity and confirming that credentials are being obtained from the attached IAM role.
+- IAM roles eliminate the need to store long-term AWS access keys on Amazon EC2 instances by providing temporary security credentials automatically.
+- AWS Security Token Service (AWS STS) issues temporary security credentials when Amazon EC2 assumes the attached IAM role.
+- An **instance profile** is the mechanism that associates an IAM role with an Amazon EC2 instance, enabling the AWS CLI and SDKs to automatically retrieve temporary credentials through the EC2 Instance Metadata Service (IMDS).
+- Following the **principle of least privilege** improves security by granting only the permissions required. In this lab, the IAM role was limited to `s3:ListBucket` and `s3:GetObject`, preventing unauthorized write operations such as `s3:PutObject`.
+- Commands such as `aws sts get-caller-identity` and `aws configure list` are useful for verifying the IAM identity and confirming that temporary credentials are being obtained from the attached IAM role.
 
-In simple terms:
+### Key Concepts
 
-- **Trust Policy** = "Who can assume this role?"
-- **Permission Policy** = "What can this role do after it is assumed?"
-- **IAM Role** = "Provides temporary AWS credentials to trusted AWS services."
-- **Instance Profile** = "Makes an IAM role available to an EC2 instance."
+- **Trust Policy** → Defines **who can assume an IAM role**.
+- **Permission Policy** → Defines **what actions the IAM role can perform** after it has been assumed.
+- **IAM Role** → Provides temporary AWS security credentials to trusted AWS services.
+- **AWS STS** → Issues temporary security credentials for assumed IAM roles.
+- **Instance Profile** → Makes an IAM role available to an Amazon EC2 instance.
+- **Principle of Least Privilege** → Grants only the permissions required to perform a specific task.
 
 ## Where I Got Stuck
 
 - No blockers.
 
 ## Cleanup
-Deleted all resources created during the lab:
 
-- Terminated the EC2 instance **ec2-s3-integration-test** and verified that no unnecessary EBS volumes remained.
+After completing the lab, I deleted all resources created during the exercise to avoid unnecessary AWS charges and maintain a clean AWS environment.
+
+### 1. Amazon EC2
+
+Terminated the Amazon EC2 instance **ec2-s3-integration-test** and verified that no unnecessary Amazon EBS volumes remained.
 
 ![image](./screenshots/ec2-clean-up.png)
 
-- Deleted the IAM role **Week2Day3EC2S3ReadRole** and its inline policy **s3-read-permission-policy**.
+### 2. IAM Resources
+
+Deleted the IAM role **Week2Day3EC2S3ReadRole** along with its attached inline IAM permission policy **s3-read-permission-policy**.
 
 ![image](./screenshots/role-cleanup.png)
 
-- Deleted the S3 bucket **ec2-s3-read-lab-sanket-dangat** and the test objects.
+### 3. Amazon S3
+
+Deleted the Amazon S3 bucket **ec2-s3-read-lab-sanket-dangat** after removing all test objects stored in the bucket.
 
 ![image](./screenshots/s3-cleanup.png)
+
+All resources created during the lab were successfully removed, ensuring no ongoing charges or unused resources remained in the AWS account.
 
 ## LinkedIn Post
 Add your post link.
