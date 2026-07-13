@@ -3,6 +3,13 @@
 ## Name
 Sanket Dangat
 
+## Tasks Completed
+- [x] Watched/read the weekly content
+- [x] Completed hands-on labs
+- [x] Added screenshots or proof
+- [x] Posted on LinkedIn
+- [x] Cleaned up AWS resources
+
 ## Architecture Diagram
 
 The following diagram illustrates how an Amazon EC2 instance securely accesses an Amazon S3 bucket using an IAM role. AWS STS issues temporary security credentials through the instance profile, allowing read-only access without storing long-term AWS access keys.
@@ -137,4 +144,4 @@ Deleted the Amazon S3 bucket **ec2-s3-read-lab-sanket-dangat** after removing al
 All resources created during the lab were successfully removed, ensuring no ongoing charges or unused resources remained in the AWS account.
 
 ## LinkedIn Post
-Add your post link.
+[LinkedIn Link](https://www.linkedin.com/posts/sanket-dangat-6462b8271_10weeksofaws-10weeksofaws-aws10weekchallenge-ugcPost-7482338579109756928-s-Mi/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEJuHJYBII9imgLntyUMaz684Imwl2w4XOM)
