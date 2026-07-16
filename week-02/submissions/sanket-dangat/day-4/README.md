@@ -7,7 +7,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 # Architecture Diagram
@@ -236,4 +236,4 @@ I learned that **AWS account email addresses and IAM Identity Center user email 
 ---
 
 ## LinkedIn Post
-Add your post link.
+[LinkedIn Link](https://lnkd.in/p/d_dfiWWp)
