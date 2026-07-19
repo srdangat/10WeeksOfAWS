@@ -104,6 +104,37 @@ Built a two-AZ VPC with public and private subnets, an Internet Gateway, and ded
 
 ---
 
+## Architecture Decisions
+
+## Architecture Decisions
+
+### Why separate Public and Private Subnets?
+
+Public subnets are designed for internet-facing resources, such as web servers or load balancers, while private subnets are intended for internal resources like application servers and databases. Separating them improves security by restricting direct internet access to only the resources that require it.
+
+### Why use separate Route Tables?
+
+Using separate route tables allows different routing policies for public and private subnets:
+
+- **Public Route Table** → Local route (`10.10.0.0/16`) + Default route (`0.0.0.0/0`) to the Internet Gateway (IGW)
+- **Private Route Table** → Local route (`10.10.0.0/16`) only
+
+This ensures that only the public subnets have direct internet connectivity, while private subnets remain isolated from inbound internet traffic.
+
+### Why deploy resources across two Availability Zones?
+
+Distributing subnets across two Availability Zones improves availability and fault tolerance. If one Availability Zone becomes unavailable, resources in the other Availability Zone can continue to operate.
+
+### Why use a /16 VPC CIDR with /24 subnets?
+
+A `/16` VPC provides a large address space for future growth, while `/24` subnets offer a manageable number of IP addresses and allow additional subnets to be created later without overlapping existing networks.
+
+### Why keep the Main Route Table local-only?
+
+The Main Route Table retains only the default local route. Public and private subnets are explicitly associated with dedicated route tables, making routing behavior clear, predictable, and easier to manage.
+
+---
+
 ## Where I Got Stuck
 
 `No blocker`
