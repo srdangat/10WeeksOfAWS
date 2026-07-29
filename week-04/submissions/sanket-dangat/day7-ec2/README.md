@@ -7,7 +7,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -143,7 +143,6 @@ Successfully completed the manual Golden AMI creation and the automated EC2 Imag
 
 ## Cleanup
 
-## Cleanup
 
 **Manual Golden AMI cleanup (in order):**
 1. Terminated `cloudadhar-ec2-ami-test-v1-01`
@@ -167,4 +166,4 @@ Successfully completed the manual Golden AMI creation and the automated EC2 Imag
 ---
 
 ## LinkedIn Post
-[LinkedIn Link]()
+[LinkedIn Link](https://www.linkedin.com/posts/activity-7488082822960783360-ZuFK?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEJuHJYBII9imgLntyUMaz684Imwl2w4XOM)
