@@ -4,17 +4,62 @@
 Sanket Dangat
 
 ## Tasks Completed
-- [ ] Watched/read the weekly content
-- [ ] Completed hands-on labs
-- [ ] Added screenshots or proof
+- [x] Watched/read the weekly content
+- [x] Completed hands-on labs
+- [x] Added screenshots or proof
 - [ ] Posted on LinkedIn
-- [ ] Cleaned up AWS resources
+- [x] Cleaned up AWS resources
 
 
 ## Architecture
 
+**`Amazon EBS Persistence & Disaster Recovery Architecture`**
+
+![Amazon EBS Persistence & Disaster Recovery Architecture](diagrams/ebs-persistence-disaster-recovery-architecture.gif)
+
+## Architecture Overview
+
+- Amazon EC2 uses an encrypted **Amazon EBS gp3 volume** for persistent block storage.
+- **Amazon EBS volumes are Availability Zone (AZ) scoped** and can only be attached to EC2 instances within the same AZ.
+- **Amazon Data Lifecycle Manager (DLM)** automatically creates scheduled snapshots for EBS volumes tagged with **`Backup=Daily`**.
+- **Amazon EBS snapshots are Regional resources** and can be copied across AWS Regions.
+- The snapshot is copied from **ap-south-1 (Mumbai)** to **ap-southeast-2 (Sydney)** for disaster recovery.
+- A new encrypted **Amazon EBS volume** is created from the copied snapshot and attached to a **Recovery EC2** instance.
+- This architecture provides **persistent storage, automated backups, and cross-region disaster recovery**.
+
 ---
 
+**`Amazon EFS Shared Storage Architecture`**
+
+![Amazon EFS Shared Storage Architecture](diagrams/efs-shared-storage-architecture.gif)
+
+## Architecture Overview
+
+- Amazon EC2 instances in two Availability Zones mount a shared **Amazon EFS file system** for persistent file storage.
+- **Amazon EFS** is a Regional service that automatically stores data redundantly across multiple Availability Zones for high availability and durability.
+- An **Amazon EFS Mount Target** is created in each Availability Zone to provide low-latency access for EC2 instances within the same AZ.
+- EC2 instances mount Amazon EFS over **NFS (TCP 2049)** through their local mount target.
+- **Security Groups** allow inbound **NFS (TCP 2049)** traffic from the EC2 instances to the Amazon EFS mount targets.
+- Both EC2 instances can simultaneously read from and write to the same shared Amazon EFS file system.
+- This architecture provides **shared storage, high availability, and scalable file access** across multiple Availability Zones.
+
+---
+
+## Decision Table
+
+| Requirement | Choice | Reason |
+|---|---|---|
+| Persistent block storage for EC2 | Amazon EBS gp3 | Provides durable, high-performance SSD block storage for general-purpose workloads. |
+| Secure data at rest | EBS Encryption | Encrypts EBS volumes and snapshots using AWS KMS to protect data. |
+| Automated backup scheduling | Amazon Data Lifecycle Manager (DLM) | Automatically creates scheduled EBS snapshots based on lifecycle policies. |
+| Point-in-time recovery | Amazon EBS Snapshot | Captures point-in-time backups of EBS volumes for data protection and recovery. |
+| Cross-Region disaster recovery | Cross-Region Snapshot Copy | Copies EBS snapshots to another AWS Region for disaster recovery. |
+| Recovery after Regional failure | Create EBS Volume from Snapshot | Restores a new EBS volume from the copied snapshot in the destination Region and Availability Zone. |
+| Compute recovery | Recovery EC2 Instance | Attaches the restored EBS volume to a new EC2 instance to resume workloads. |
+| Availability Zone storage | Amazon EBS | EBS volumes are Availability Zone-scoped and can only be attached to EC2 instances in the same AZ. |
+| Regional backup storage | Amazon EBS Snapshots | Snapshots are Regional resources and can be used to create new EBS volumes when required. |
+
+---
 ## Result
 
 Successfully completed hands-on labs covering Amazon EBS persistence, snapshot-based disaster recovery, cross-Region backup, Data Lifecycle Manager (DLM) policy review, Placement Groups, and Amazon EFS shared storage. Additionally completed the optional demonstrations for Fast Snapshot Restore, io2 Multi-Attach, and Instance Store validation.
