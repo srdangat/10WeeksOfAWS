@@ -13,11 +13,53 @@ Sanket Dangat
 
 ## Architecture
 
+**`Manual AMI Creation Architecture`**
+
 ![Manual AMI Creation Architecture](diagrams/manual_ami_creation_architecture.gif)
 
+### Architecture Overview
+
+- A **Builder EC2** instance is launched in a public subnet with **Amazon Linux 2023**, **NGINX** installed through User Data, **IMDSv2 required**, and the **Amazon SSM Agent**.
+- **AWS Systems Manager Session Manager** provides secure instance administration without opening inbound SSH access.
+- The configured Builder EC2 instance is captured as a **versioned Golden AMI** after validation.
+- A **Test EC2** instance is launched from the Golden AMI without User Data to verify that the application and configuration are baked into the image.
+- Both EC2 instances use an **IAM instance role** to securely access AWS services without storing long-term credentials.
+- The architecture provides a **repeatable, secure, and consistent Golden AMI creation process** for future EC2 deployments.
+
+---
+
+**`Image Builder Automated Golden AMI Pipeline Architecture`**
 
 ![Image Builder Automated Golden AMI Pipeline Architecture](diagrams/ec2-image-builder-pipeline-architecture.gif)
 
+### Architecture Overview
+
+- **Amazon EC2 Image Builder** automates the creation, testing, and distribution of versioned Golden AMIs.
+- An **Image Pipeline** orchestrates the entire workflow using an **Image Recipe**, **Infrastructure Configuration**, and **Distribution Configuration**.
+- The **Image Recipe** combines AWS-managed components with custom build and test components to configure and validate the image.
+- A temporary **Build EC2** instance creates the Golden AMI, and a temporary **Test EC2** instance validates the image before publication.
+- **Amazon Inspector** performs vulnerability assessment on the generated AMI to improve security and compliance.
+- The validated **Private Golden AMI** is distributed and can be shared across **multiple AWS Regions and AWS accounts** using the configured Distribution Configuration.
+- The architecture provides **automated image creation, security validation, versioning, and consistent Golden AMI deployments**.
+
+---
+
+## Decision Table
+
+| Requirement | Choice | Reason |
+|---|---|---|
+| Repeatable patched NGINX baseline | Golden AMI | Provides a standardized, versioned image for consistent EC2 deployments. |
+| Automated image creation and testing | EC2 Image Builder | Automates image building, validation, versioning, and distribution. |
+| Secure instance administration | AWS Systems Manager Session Manager | Enables secure instance access without opening inbound SSH ports or managing SSH keys. |
+| Secure access to instance metadata | IMDSv2 Required | Uses session-based tokens to protect instance metadata from unauthorized access. |
+| Secure access to AWS services | IAM Instance Role | Provides temporary credentials to EC2 without storing long-term access keys. |
+| Image customization | Image Builder Components | Installs and configures software during the build and validates the image during testing. |
+| Standardized image definition | Image Recipe | Defines the base image, components, and image configuration for repeatable builds. |
+| Controlled build environment | Infrastructure Configuration | Specifies the build instance, networking, IAM role, and security settings. |
+| Automated AMI publishing | Distribution Configuration | Distributes the validated Golden AMI to the required AWS Regions and accounts. |
+| Image security validation | Amazon Inspector | Scans the generated AMI for vulnerabilities before deployment. |
+
+---
 
 ## Result
 
