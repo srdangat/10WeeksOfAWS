@@ -184,7 +184,6 @@ Confirmed that the replacement EC2 instance successfully passed the Application 
 
 ---
 
-
 ## Where I Got Stuck
 
 `No blocker`
@@ -204,3 +203,9 @@ Confirmed that the replacement EC2 instance successfully passed the Application 
 8. Detached and deleted the Internet Gateway
 9. Deleted Route Tables and Subnets
 10. Deleted VPC `cloudadhar-day9-vpc`
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://lnkd.in/p/dtBFbgpV)
