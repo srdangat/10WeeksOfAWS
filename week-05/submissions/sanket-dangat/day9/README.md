@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
