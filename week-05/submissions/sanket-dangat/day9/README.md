@@ -190,6 +190,12 @@ Confirmed that the replacement EC2 instance successfully passed the Application 
 
 ---
 
+## Additional Documentation
+
+- [Week 5 Design Decisions](../../design-decisions.md#week-5---day-9-alb-backed-auto-scaling)
+
+---
+
 ## Cleanup
 
 **Auto Scaling and Load Balancer cleanup (in order):**
