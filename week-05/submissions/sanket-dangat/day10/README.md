@@ -11,6 +11,35 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+![ALB Blue/Green Routing and NLB Architecture](diagram/alb-blue-green-routing-and-nlb.gif)
+
+
+## Architecture Overview
+
+- **Amazon VPC:** Deployed a dedicated Amazon VPC in the **ap-south-1 (Mumbai)** Region spanning **two Availability Zones (AZs)** with public and private subnets to provide a highly available and fault-tolerant network architecture.
+
+- **Networking:** Configured public subnets for the internet-facing **Application Load Balancer (ALB)**, **Network Load Balancer (NLB)**, and **NAT Gateway**, while hosting Blue and Green Amazon EC2 instances in private subnets for secure application deployment.
+
+- **Application Load Balancer (ALB):** Deployed an internet-facing ALB with **HTTPS** enabled using an **AWS Certificate Manager (ACM)** wildcard certificate. Configured **host-based routing**, **path-based routing**, **weighted Blue/Green traffic distribution**, **target group stickiness**, **health checks**, and **connection draining** to demonstrate advanced Layer 7 traffic management.
+
+- **Network Load Balancer (NLB):** Deployed an internet-facing NLB with a **TLS listener** using the same ACM wildcard certificate to provide secure **Layer 4 TCP/TLS** load balancing for backend EC2 instances.
+
+- **Amazon EC2:** Deployed Blue and Green NGINX web servers in private subnets across two Availability Zones and registered them with dedicated ALB and NLB target groups for high availability and traffic distribution.
+
+- **DNS & Certificates:** Configured **Amazon Route 53 Alias records** for the ALB (`api.cloud2devops.online`, `green.cloud2devops.online`) and the NLB (`tcp.cloud2devops.online`) using an ACM wildcard certificate to enable secure HTTPS and TLS access.
+
+- **Connectivity & Security:** Used an **Internet Gateway (IGW)**, **NAT Gateway**, route tables, and **Security Groups** to provide secure internet connectivity for public resources while keeping backend EC2 instances isolated in private subnets.
+
+- **Administration:** Enabled secure instance management using **AWS Systems Manager Session Manager**, eliminating the need for a bastion host or inbound SSH access.
+
+- **Architecture Benefits:** Delivers a secure, highly available, fault-tolerant, and production-ready load balancing architecture demonstrating advanced **Layer 7 routing**, **Layer 4 load balancing**, **Blue/Green deployment**, **traffic shifting**, **target group stickiness**, **health monitoring**, **connection draining**, and **secure application delivery** aligned with AWS Well-Architected Framework principles.
+
+> **Note:** The architecture diagram illustrates a production-ready deployment using **one NAT Gateway per Availability Zone** for high availability. The hands-on implementation used a **single NAT Gateway** to optimize AWS Learner Lab costs while demonstrating the same core networking and load balancing concepts.
+
+---
+
 ## Result
 
 Successfully implemented an Application Load Balancer (ALB) with advanced Layer 7 routing and a Network Load Balancer (NLB) for Layer 4 traffic distribution. Configured HTTPS on the ALB and TLS on the NLB using an ACM wildcard certificate and Route 53 alias records. Verified host-based routing, path-based routing, weighted Blue/Green traffic distribution, target group stickiness, health checks, connection draining, and secure load balancing across two EC2 instances.
