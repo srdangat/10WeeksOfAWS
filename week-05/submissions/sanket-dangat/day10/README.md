@@ -7,7 +7,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -305,6 +305,12 @@ Repeated HTTPS requests from AWS CloudShell confirmed traffic distribution acros
 
 ---
 
+## Additional Documentation
+
+- [Week 5 Design Decisions](../../design-decisions.md#week-5---day-10-alb-bluegreen-routing-and-nlb)
+
+---
+
 ## Cleanup
 
 Resources deleted during cleanup (in order):
@@ -331,3 +337,9 @@ Resources deleted during cleanup (in order):
 - Detached and deleted the Internet Gateway
 - Deleted Route Tables and Subnets
 - Deleted VPC `cloudadhar-day10-vpc`
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://www.linkedin.com/posts/activity-7491396965486985216-wzf-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEJuHJYBII9imgLntyUMaz684Imwl2w4XOM)
