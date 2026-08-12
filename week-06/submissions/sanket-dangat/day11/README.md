@@ -12,6 +12,11 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+![Architecture](diagram/day11-architecture-diagram.png)
+
+
 ## Result
 
 Successfully implemented a private, versioned, encrypted, and protected Amazon S3 workflow. Verified private bucket access, S3 Versioning and recovery from a delete marker, manual bucket-to-bucket object copy with independent destination encryption, SSE-KMS with S3 Bucket Key, presigned URL access, Lifecycle Management, and S3 Object Lock Legal Hold protection.
