@@ -11,6 +11,12 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+![Architecture](diagram/day12-architecture-diagram.gif)
+
+
+
 ## Result
 
 Successfully completed and validated the Day 12 Amazon S3 lab covering private S3 buckets, Same-Region Replication (SRR), Cross-Region Replication (CRR), versioning, prefix-based replication, Transfer Acceleration, multipart upload cleanup, and AWS storage service reviews.
