@@ -7,7 +7,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -337,3 +337,7 @@ No hybrid storage resources were deployed.
 16. Verify that no Day 12 S3 buckets, replication rules, lifecycle rules, or temporary website configuration remain.
 
 ---
+
+## LinkedIn Post
+
+[LinkedIn Link] (https://www.linkedin.com/posts/activity-7494365908346503168-QRJb?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEJuHJYBII9imgLntyUMaz684Imwl2w4XOM)
