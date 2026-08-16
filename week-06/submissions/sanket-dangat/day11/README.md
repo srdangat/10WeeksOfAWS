@@ -221,3 +221,9 @@ Verified that deletion succeeded after the Legal Hold was removed and no retenti
 6. Deleted the destination bucket `cloudadhar-s3-day11-copy-sankted-<unique-suffix>`
 7. Deleted the source bucket `cloudadhar-s3-day11-sankted-<unique-suffix>`
 8. Verified that no Day 11 S3 buckets, objects, lifecycle rules
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link] (https://lnkd.in/p/dE88ersB)
