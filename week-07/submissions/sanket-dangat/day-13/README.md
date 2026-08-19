@@ -1,4 +1,4 @@
-# Week 5 - Day 13: RDS, Aurora Serverless v2, Recovery, and RDS Proxy
+# Week 7 - Day 13: RDS, Aurora Serverless v2, Recovery, and RDS Proxy
 
 ## Name
 Sanket Dangat
