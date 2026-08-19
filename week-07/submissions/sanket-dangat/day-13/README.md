@@ -456,10 +456,6 @@ After testing with the official `AmazonRootCA1.pem` certificate, the connection 
 
 **Day 13 cleanup should be performed only after all required evidence has been captured.**
 
-## Cleanup
-
-**Day 13 cleanup should be performed only after all required evidence has been captured.**
-
 1. Remove the State Manager association
 2. Remove the SSM association dispatch role
 3. Delete the SSM Command document
