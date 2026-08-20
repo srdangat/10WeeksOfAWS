@@ -90,6 +90,8 @@ The custom VPC uses three logical subnet tiers across two Availability Zones:
 - Local VPC route
 - No default internet route
 
+![Vpc](screenshots/vpc.png)
+
 ---
 
 ## Screenshots
