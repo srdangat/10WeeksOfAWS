@@ -3,6 +3,15 @@
 ## Name
 Sanket Dangat
 
+
+## Tasks Completed
+- [x] Watched/read the weekly content
+- [x] Completed hands-on labs
+- [x] Added screenshots or proof
+- [ ] Posted on LinkedIn
+- [x] Cleaned up AWS resources
+
+
 ---
 
 ## Result
@@ -451,6 +460,12 @@ ERROR 2026 (HY000): TLS/SSL error: unable to get local issuer certificate
 ```
 
 After testing with the official `AmazonRootCA1.pem` certificate, the connection succeeded and the RDS Proxy certificate was verified successfully.
+
+---
+
+## Additional Documentation
+
+- [Week 7 Design Decisions](../design-decisions.md)
 
 ---
 
