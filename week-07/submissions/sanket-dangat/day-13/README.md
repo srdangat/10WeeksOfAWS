@@ -12,6 +12,31 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+## RDS High Availability, Recovery & Read Replica
+
+![Architecture](diagram/aws-mumbai-ha-rds-recovery-read-replica.gif)
+
+
+## Architecture Description
+
+This architecture is a **highly available, multi-AZ enterprise infrastructure** designed for security, strict network isolation, and database resilience.
+
+1. **Secure Console Access** – A Cloud Engineer establishes an authenticated session over HTTPS directly to **AWS Systems Manager Session Manager**. This acts as a secure cloud-based broker, allowing direct interactive console access to private EC2 instances over the public internet without requiring inbound SSH ports, public IP addresses, a public bastion host, or private VPC interface endpoints.
+
+2. **Tiered Network Isolation** – The VPC network architecture segregates infrastructure across two Availability Zones (`ap-south-1a` and `ap-south-1b`) into three distinct layers: Public subnets for internet ingress/egress processing, Private App subnets for compute workloads (`DB Client`), and fully isolated Private Database subnets.
+
+3. **Asymmetric Route Tables (No VPC Endpoints)** – Network traffic is strictly controlled via distinct routing policies, explicitly bypassing the use of VPC Interface Endpoints (AWS PrivateLink). Public subnets route external traffic via an **Internet Gateway (igw)**. Private App subnets route all internet-bound egress (`0.0.0.0/0`)—including both software package installations and systems management traffic—through redundant **NAT Gateways (nat-a/nat-b)** to eliminate redundant endpoint base infrastructure costs. The Database subnets possess no internet route, restricting traffic entirely to internal `local` VPC communication.
+
+4. **Resilient Database Tier** – The data tier isolates database roles across individual compute nodes. The **Master RDS** instance handles write traffic and executes **Synchronous Replication** to a passive **Standby (Multi-AZ)** node for disaster recovery, alongside **Asynchronous Replication** to a standalone **Read Replica** dedicated strictly to offloading read query traffic from the EC2 clients.
+
+5. **Native Secrets Management** – An **AWS Secrets Manager** integration connects natively with the **Master RDS** instance to orchestrate automated database master password rotations. Because no VPC endpoints are configured, the Master RDS utilizes the established NAT Gateway path to communicate outbound with the public Secrets Manager API, automatically synchronizing updated credentials across the standby and read replica nodes via engine-level replication streams.
+
+6. **Overall Flow** – **Cloud Engineer → HTTPS → AWS Systems Manager Session Manager → Internet Gateway → NAT Gateways → App Private Subnets (EC2 Clients) → DB Security Group (Port 3306) → Isolated DB Private Subnets (Master / Standby / Read Replica RDS)**.
+
+
+
 ---
 
 ## Result
