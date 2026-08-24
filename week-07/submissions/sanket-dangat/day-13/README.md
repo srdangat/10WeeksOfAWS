@@ -35,9 +35,35 @@ This architecture is a **highly available, multi-AZ enterprise infrastructure** 
 
 6. **Overall Flow** – **Cloud Engineer → HTTPS → AWS Systems Manager Session Manager → Internet Gateway → NAT Gateways → App Private Subnets (EC2 Clients) → DB Security Group (Port 3306) → Isolated DB Private Subnets (Master / Standby / Read Replica RDS)**.
 
+---
 
+## RDS: Automating Logical Table Backups via SSM & S3
+
+![Architecture](diagram/ssm-automation-rds-backup-to-s3.gif)
+
+
+## Architecture Description
+
+This architecture automates a secure, network-isolated **database table logical backup** to Amazon S3.
+
+1. **Automated Orchestration** – **SSM State Manager** triggers a custom **SSM Command Document** every 24 hours without requiring open inbound management ports.
+
+2. **Private Execution** – A private EC2 **DB Client (Worker)** receives the execution command through outbound connectivity, without requiring a public IP or bastion host.
+
+3. **Dedicated Backup Credentials** – Created a dedicated MySQL **`backup_user`** with restricted `SELECT` permission on the `cloudadhardb.orders` table. The username and password are stored securely in **AWS Secrets Manager** instead of being hardcoded in the backup script.
+
+4. **Secrets Retrieval** – The worker retrieves the `backup_user` credentials dynamically from **AWS Secrets Manager** using the `GetSecretValue` API call.
+
+5. **Secure Database Export** – The worker establishes a secure **TLS connection** with the **Master RDS** using the RDS CA bundle and exports the `orders` table over the encrypted connection.
+
+6. **Compressed Backup & Secure Storage** – The client compresses the table dump into a `.sql.gz` file and uploads it through **NAT-A** to the **versioned, encrypted S3 backup bucket** with Block Public Access enabled.
+
+7. **Overall Flow** –
+
+   **SSM State Manager → SSM Command Document → DB Client (Worker) → Secrets Manager → `backup_user` Credentials → TLS Connection → Master RDS `orders` Table → Gzip Compression → NAT-A → Amazon S3 Backup Bucket**
 
 ---
+
 
 ## Result
 
