@@ -64,6 +64,47 @@ This architecture automates a secure, network-isolated **database table logical 
 
 ---
 
+## Aurora Serverless v2
+
+![Architecture](diagram/aurora_serveless_v2.gif)
+
+
+## Architecture Description
+
+This architecture creates a highly available and automatically scaling database environment using **Amazon Aurora Serverless v2** across two Availability Zones.
+
+1. **Smart Automatic Scaling** – The Aurora Serverless v2 cluster has a **Writer Instance** in one Availability Zone and a **Reader Instance** in another. The Writer handles read and write operations through the cluster endpoint, while the Reader can handle read workloads through the Reader Endpoint. Aurora Serverless v2 automatically adjusts compute capacity based on workload.
+
+2. **Distributed Shared Storage** – Both Aurora instances use Aurora's **distributed shared storage layer**, which automatically scales as the database grows. The storage is replicated across Availability Zones to provide high availability and durability.
+
+3. **Smart Traffic Routing** – The DB Clients connect directly to Aurora using the **Cluster Endpoint** for read/write operations and the **Reader Endpoint** for read operations. The Cluster Endpoint always points to the current Writer, while the Reader Endpoint provides access to available Aurora Replicas.
+
+4. **Secure Password Management** – Database credentials are securely managed using **AWS Secrets Manager** through native password integration. This prevents database credentials from being hardcoded in the DB Client configuration.
+
+5. **Private and Controlled Access** – The Aurora instances are deployed in **private DB subnets** and are not directly accessible from the internet. The **DB Security Group** allows MySQL/Aurora traffic on port **3306** only from the authorized **App Security Group**.
+
+---
+
+## Aurora Serverless v2 RDS Proxy
+
+![Architecture](diagram/aurora_serveless_v2_proxy.gif)
+
+
+## Architecture Description
+
+This architecture adds **Amazon RDS Proxy** between the DB Clients and the Aurora Serverless v2 cluster to provide managed database connection handling while maintaining a secure and highly available architecture.
+
+1. **Connection Management** – **RDS Proxy** acts as an intermediary between the DB Clients and Aurora. It manages and reuses database connections through connection pooling, helping applications handle large numbers of connections and sudden connection spikes more efficiently.
+
+2. **Separate Proxy Endpoints** – The DB Clients connect to RDS Proxy instead of connecting directly to Aurora. The **Proxy Default Endpoint** is used for read and write operations, while the **Proxy Reader Endpoint** is used for read workloads. RDS Proxy then manages connections to the appropriate Aurora instances.
+
+3. **Secure Password Management** – RDS Proxy uses credentials stored in **AWS Secrets Manager** through native password integration to authenticate with the Aurora database. This keeps database credentials securely managed outside the application.
+
+4. **Multi-Layer Network Protection** – The **Proxy Security Group** allows MySQL/Aurora traffic on port **3306** only from the **App Security Group**. The **DB Security Group** allows port **3306** only from the **Proxy Security Group**, preventing DB Clients from accessing Aurora directly.
+
+5. **Private and Highly Available Database Layer** – The RDS Proxy and Aurora instances operate within the private VPC environment across multiple Availability Zones. The DB Clients use **AWS Systems Manager Session Manager** for secure administrative access without requiring a bastion host or inbound SSH access.
+
+---
 
 ## Result
 
