@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -592,3 +592,13 @@ After testing with the official `AmazonRootCA1.pem` certificate, the connection 
 25. Delete the VPC `cloudadhar-day-13-vpc`
 
 ---
+
+## LinkedIn Posts
+
+[LinkedIn Link](https://lnkd.in/p/dPk9np5D)
+
+
+[LinkedIn Link](https://lnkd.in/p/dZqKbwmJ)
+
+
+[LinkedIn Link](https://lnkd.in/p/dXapmmrp)
