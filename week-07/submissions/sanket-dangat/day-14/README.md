@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 ## Architecture
@@ -246,3 +246,7 @@ Shows `LSI1` being used with a status-prefix query to filter `SHIPPED` orders an
 9. Verify that no Day 14 Lambda, IAM, DynamoDB, or Function URL resources remain
 
 ---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://lnkd.in/p/dhgcd7Gb)
