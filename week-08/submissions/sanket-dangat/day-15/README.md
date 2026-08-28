@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -506,3 +506,9 @@ Page Version: 2
 14. Delete the ACM certificate for `cdn.srdangat.online` from `us-east-1`
 15. Remove the ACM DNS validation CNAME record from Route 53, if no longer required
 16. Verify that no Day 15 CloudFront, WAF, S3, EC2, Route 53, ACM, or CloudFront signing resources remain
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://lnkd.in/p/dPRkV-3H)
