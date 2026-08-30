@@ -12,6 +12,30 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+![Architecture](diagram/aws-multi-region-dr.gif)
+
+## Architecture Description
+
+This architecture is a **highly resilient, automated AWS-based Cross-Region Backup and Disaster Recovery solution** designed for data integrity, compliance, and deterministic failover orchestrations.
+
+1. **Primary Compute Tier** – The workload originates from a **Primary EC2 instance** with an attached **gp3 Encrypted Root EBS volume** residing securely inside a public subnet (`10.10.0.0/20`) of the Primary VPC (`10.10.0.0/16`) in `ap-south-1` (Mumbai).
+
+2. **AWS Backup Service** – Initiates localized, point-in-time **On-Demand Backup** jobs against the stateful instance and volume properties to capture configuration metadata and raw block data.
+
+3. **Primary Backup Vault** – Serves as the logical storage container within the primary region, securing the resulting **Recovery Point (Encrypted AMI)** at rest using a dedicated, local **KMS Customer-Managed Key (CMK)**.
+
+4. **Cross-Region Copy** – Transmits the data over the secure AWS global network backbone to the **DR Backup Vault** in `us-east-1` (North Virginia), where it is safely re-encrypted using a regional target **KMS CMK** and stored as a localized **Recovery Point (Encrypted AMI)**.
+
+5. **DR Failover Restore** – Triggered during a disaster recovery declaration, extracting the backup instance image from the secondary vault to automatically provision a running **Restored EC2** instance and its matching **gp3 Restored Encrypted Root EBS** volume.
+
+6. **Target Infrastructure Placement** – Deploys the restored compute resources directly into an isolated public subnet (`10.20.0.0/20`) inside the destination DR VPC (`10.20.0.0/16`), maintaining clean structural and regional boundaries throughout the failover process.
+
+7. **Overall Flow** – **Primary EC2 / gp3 EBS → AWS Backup → Primary Backup Vault (KMS CMK) → Cross-Region Copy → DR Backup Vault (KMS CMK) → DR Failover Restore → Restored EC2 / gp3 EBS**.
+
+---
+
 ## Result
 
 Successfully implemented a **Cross-Region EC2 Backup and Disaster Recovery architecture** using **Amazon EC2, Amazon EBS, AWS Backup, AWS KMS, IAM, Amazon VPC, and AWS Security Groups**.
