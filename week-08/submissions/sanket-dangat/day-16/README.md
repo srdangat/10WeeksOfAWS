@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -889,3 +889,9 @@ Recorded a sanitized readiness assessment for both Regions.
 12. Remove IAM roles or permissions created specifically for the Day
 13. Verify that no Day 16 EC2 instances, EBS volumes, Security Groups, AWS Backup recovery points, Backup vaults, KMS resources, or temporary IAM resources remain
 14. Verify that no billable Day 16 resources remain in Mumbai (`ap-south-1`) or N. Virginia (`us-east-1`)
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://www.linkedin.com/posts/activity-7499815313375461376-0qIy?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEJuHJYBII9imgLntyUMaz684Imwl2w4XOM)
