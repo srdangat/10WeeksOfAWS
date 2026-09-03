@@ -18,12 +18,73 @@ Sanket Dangat
 
 ![Architecture](diagram/event-driven-order-processing-architecture.gif)
 
+
+## Architecture Description
+
+* The **Order Client/API** publishes order events to an **Amazon SNS Standard Topic**, which provides asynchronous publish-subscribe communication.
+
+* **SNS Subscription Filter Policies** evaluate message attributes and route matching messages to the appropriate SQS subscription. For example, the Priority Queue subscription can use a `priority = HIGH` filter.
+
+* **Amazon EventBridge Custom Bus** receives structured order events and uses event patterns for content-based routing. The configured rule routes orders where `Amount > 5000` to the Priority Queue.
+
+* **SNS filtering** is suitable when routing is based on message attributes, while **EventBridge rules** are suitable for routing based on structured event content and conditions.
+
+* **SQS Standard Queues** are used for high throughput and automatic scaling.
+
+* The **SQS visibility timeout** temporarily hides a received message while it is being processed. If processing fails repeatedly and `MaxReceiveCount = 3` is reached, SQS moves the message to the configured **Dead Letter Queue (DLQ)**.
+
+* The DLQ provides temporary retention of failed messages for investigation and recovery. Messages can later be returned to the source queue using **DLQ Redrive**.
+
+* **EventBridge Scheduler** supports one-time and recurring schedules. A one-time payment reminder can execute at the configured time and send the scheduled message to the target queue without requiring a continuously running scheduler.
+
+* **Amazon CloudWatch** monitors queue depth, message processing, delivery success, and EventBridge invocation failures.
+
+* **Idempotent processing** helps ensure that repeated processing of the same message does not produce unintended duplicate effects in distributed messaging workflows.
+
+* Cost considerations include **SQS API requests, SNS message delivery, EventBridge invocations, and SQS message retention**.
+
+* Security is supported through **least-privilege IAM roles, encryption, and controlled access to messaging resources**.
+
+* The architecture can be extended with **Lambda-based processing, cross-region replication, and additional event-driven workflows**.
+
+
 ---
 
 ## Kinesis Firehos S3 Streaming
 
 ![Architecture](diagram/kinesis-firehose-s3-architecture.gif)
 
+
+## Architecture Description
+
+* The **Client devices**, such as laptops and mobile devices, stream clickstream events directly into an **Amazon Kinesis Data Stream** operating in **On-Demand Capacity Mode**, allowing capacity to scale with changing traffic.
+
+* The `customer_ID` is used as the **Kinesis partition key**. Kinesis hashes the partition key to determine the shard, so records with the same partition key are routed to the same shard, where their order is maintained.
+
+* **Amazon Data Firehose** uses Kinesis Data Streams as its source and buffers incoming records before delivering them to the S3 destination.
+
+* The configured **5 MiB buffer size** and **300-second buffer interval** provide a trade-off between delivery latency and delivery efficiency. Records are delivered when the configured buffer size or buffer interval is reached.
+
+* The streaming data is delivered to a private **Amazon S3 Analytics Bucket** in the **Mumbai (`ap-south-1`) Region**.
+
+* **S3 Block Public Access** is enabled and **SSE-S3 encryption** protects the stored objects.
+
+* Firehose organizes delivered objects using **time-based prefixes**, such as `Year/Month/Day/Hour`, making the data easier to organize and query.
+
+* Using UTC-based time organization provides consistent partitioning for analytics workloads across different geographic locations.
+
+* **Amazon CloudWatch** monitors Kinesis ingestion and Firehose delivery metrics, including incoming records, delivery success, failures, and pipeline health.
+
+* Firehose can be extended with **AWS Lambda** for record transformation, cleaning, filtering, or masking before delivery to S3.
+
+* For analytics, **Amazon Athena** can query the S3 data using SQL, while **Amazon QuickSight** can visualize clickstream trends and user behavior.
+
+* Cost considerations include **Kinesis Data Streams usage, Firehose data delivery, S3 storage, and S3 request costs**.
+
+* The pipeline can be extended with additional **Lambda transformations, analytics services, or cross-region data strategies** as requirements grow.
+
+
+---
 
 ## Result
 
@@ -268,6 +329,16 @@ Sent records to Kinesis, delivered them through Amazon Data Firehose, and verifi
 > **Key Difference:** Amazon MQ is for RabbitMQ/ActiveMQ workloads, while Amazon MSK is for Apache Kafka workloads.
 
 ---
+
+## Where I Got Stuck
+
+`No blocker`
+
+---
+
+## Additional Documentation
+
+- [Day 17 Design Decisions](./design-decisions.md)
 
 ## Cleanup
 
