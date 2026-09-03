@@ -12,6 +12,19 @@ Sanket Dangat
 - [x] Cleaned up AWS resources
 
 
+## Architecture
+
+## Event Driven Order Processing
+
+![Architecture](diagram/event-driven-order-processing-architecture.gif)
+
+---
+
+## Kinesis Firehos S3 Streaming
+
+![Architecture](diagram/kinesis-firehose-s3-architecture.gif)
+
+
 ## Result
 
 Successfully completed the Messaging and Streaming Practical covering Amazon SQS Standard queues, visibility timeout, Dead-Letter Queues (DLQ) and redrive, FIFO ordering, Amazon SNS fanout with subscription filtering, Amazon EventBridge custom event buses and rules, EventBridge Scheduler, Kinesis Data Streams, Amazon Data Firehose, and Amazon S3 delivery.
