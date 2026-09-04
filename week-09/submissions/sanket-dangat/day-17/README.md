@@ -332,7 +332,11 @@ Sent records to Kinesis, delivered them through Amazon Data Firehose, and verifi
 
 ## Where I Got Stuck
 
-`No blocker`
+* While polling the FIFO queue, `Payment received` remained in flight and `Order shipped` was not released from the same message group, as expected.
+* After the visibility timeout expired, I polled again and received `Payment received`, but deletion from the AWS console failed with a `receipt handle has expired` error.
+* Resolved the issue by using the **AWS CLI** to receive the message again and delete it using the **current receipt handle**.
+* On the next poll, `Order shipped` was released as expected, confirming that **FIFO ordering was maintained within the same message group**.
+
 
 ---
 
