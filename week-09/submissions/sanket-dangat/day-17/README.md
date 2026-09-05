@@ -8,7 +8,7 @@ Sanket Dangat
 - [x] Watched/read the weekly content
 - [x] Completed hands-on labs
 - [x] Added screenshots or proof
-- [ ] Posted on LinkedIn
+- [x] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
 
@@ -367,3 +367,9 @@ Sent records to Kinesis, delivered them through Amazon Data Firehose, and verifi
 17. Verify that no temporary IAM roles or permissions created specifically for Day 17 remain.
 18. Verify that no Amazon MQ broker or Amazon MSK cluster was accidentally created.
 19. Verify that no billable Day 17 resources remain in Mumbai (`ap-south-1`).
+
+---
+
+## LinkedIn Post
+
+[LinkedIn Link](https://lnkd.in/p/duwCj5_u)
