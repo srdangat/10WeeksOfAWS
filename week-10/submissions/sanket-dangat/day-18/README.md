@@ -10,6 +10,20 @@ Sanket Dangat
 - [ ] Posted on LinkedIn
 - [x] Cleaned up AWS resources
 
+## Architecture
+
+##  Serverless Order Processing
+
+![Architecture](diagrams/serverless-order.png)
+
+---
+
+## Cloudformation Lifecycle
+
+![Architecture](diagrams/cloudformation-lifecycle.png)
+
+---
+
 # Result
 
 - Completed all hands-on labs for serverless order processing and infrastructure-as-code using AWS Lambda, SQS, API Gateway, Step Functions, and CloudFormation
